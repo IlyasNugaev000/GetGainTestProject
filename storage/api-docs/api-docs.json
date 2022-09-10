@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CarSharing API",
+        "description": "CarSharing description",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/available-cars": {
+            "get": {
+                "tags": [
+                    "cars"
+                ],
+                "summary": "Получение свободных автомобилей",
+                "operationId": "fe036ac5912583b22a5366459b1159cc",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AvailableCarsResultDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/{id}/car": {
+            "get": {
+                "tags": [
+                    "cars"
+                ],
+                "summary": "Получение пользователя по id с машиной",
+                "operationId": "b1258ebe09e77cb1e43b2c5d42ca0427",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserWithCarResultDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "cars"
+                ],
+                "summary": "Добавление машины пользователю",
+                "operationId": "3bf522ab36b2c35781949b7e02d59804",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "request": "LoginRequest",
+                    "description": "Auth request fields",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "car_id"
+                                ],
+                                "properties": {
+                                    "car_id": {
+                                        "type": "string",
+                                        "example": "3"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/user/{id}/car/{car_id}": {
+            "delete": {
+                "tags": [
+                    "cars"
+                ],
+                "summary": "Удаление машины у пользователя",
+                "operationId": "20a51f1547b95b49bdb672b9f80f2225",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "car_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AvailableCarsResultDto": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ford Mustang"
+                    },
+                    "state_number": {
+                        "type": "string",
+                        "example": "х573кх"
+                    }
+                },
+                "type": "object"
+            },
+            "UserWithCarResultDto": {
+                "properties": {
+                    "user_id": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "user_name": {
+                        "type": "string",
+                        "example": "Ильяс"
+                    },
+                    "car_id": {
+                        "type": "string",
+                        "example": "2"
+                    },
+                    "car_name": {
+                        "type": "string",
+                        "example": "Ford Mustang"
+                    },
+                    "car_state_number": {
+                        "type": "string",
+                        "example": "х573кх"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
