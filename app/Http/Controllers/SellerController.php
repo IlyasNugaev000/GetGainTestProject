@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\UseCases\Seller\Dto\GetSellersEntryDto;
 use App\UseCases\Seller\GetSellersHandler;
-use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
