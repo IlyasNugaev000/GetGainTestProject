@@ -1,64 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+**Тестовое задание (создание небольшого**  **web**  **ресурса;**  **laravel**** )**
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+_ **Сущности:** _
 
-## About Laravel
+_Продавец_ – предоставляет ценовые предложение на товары
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Характеристики: наименование, список ценовых предложений на товары
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+_Товар_ – некоторый продаваемый объект, например, «ssd диск samsungt7 1TB». Один товар может продаваться любым количеством продавцов
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Характеристики: наименование, описание, изображение товара, список ценовых предложений от разных продавцов
 
-## Learning Laravel
+_Предложение_ – конкретное предложение по цене для товара от продавца.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Характеристики: товар, который предлагается; цена за единицу товара; количество товара в наличии; продавец, разместивший предложение
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+_ **HTTP** _ _ **точки** __**входа**__ **:** _
 
-## Laravel Sponsors
+GET /api/offers
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Список предложений в соответствии с переданными фильтрами.
 
-### Premium Partners
+Данные возвращаются в формате json; требований на структуру нет; добавлять свои дополнительные параметры к точке входа можно, если необходимость этого аргументирована.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Необходимо реализовать следующие фильтры (если фильтры не переданы, фильтрацию не осуществлять):
 
-## Contributing
+- наименование товара (наименования товаров, по которым сделаны предложения, должны точно совпадать с переданной строкой)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- часть наименования товара (наименования товаров, по которым сделаны предложения, должны точно совпадать с переданной строкой)
 
-## Code of Conduct
+- максимальная цена за единицу товара
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Необходимо реализовать следующие сортировки (если сортировки не переданы, сортировку не осуществлять):
 
-## Security Vulnerabilities
+- цена по возрастанию (сначала предложения с наименьшей ценой за единицу товара)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- по новизне (сначала новые предложения)
 
-## License
+Возвращаемые поля (для каждого предложения): имя товара, описание товара, ссылка на изображение товара, цена за единицу товара, количество товара в наличии, имя продавца.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+_Не обязательное задание (делается только если сразу появился вариант реализации с малыми сроками): реализовать группировку по товарам при передаче дополнительного параметра ( __view__ = __groups__ ). В этом случае возвращается не список предложений, а список товаров, к каждому из которых приписан список его предложений. При группировке предложений учитывать фильтры и сортировки (например, предложения с разными ценами не могут быть объединены в одну группу, если ведется сортировка по ценам; в этом случае один товар будет в списке несколько раз)_
+
+DELETE /api/offers/{id}
+
+Отметить предложение на удаление (не удалять физически). Авторизация должна быть; в любом удобном виде (например, по токену продавца, который выпускается в процессе заполнения БД; регистрацию, аутентификацию и т.д. не нужна/не обязательна).
+
+_Дополнительное задание: отмеченное таким образом предложение должно быть физически удалено через сутки, если не было восстановлено. Реализация любым способом._
+
+POST /api/offers/{id}
+
+Восстановить отмеченное на удаление предложение. На тело ограничений нет.
+
+GET /api/products/{id}/sellers
+
+Список всех продавцов, которые предлагают данный товар
+
+Данные возвращаются в формате json; требований на структуру нет; добавлять свои дополнительные фильтры/параметры к точке входа можно, если необходимость этого аргументирована; для каждого продавца возвращается его имя.
+
+GET /products/{id}/sellers
+
+_Не обязательная точка входа. Аналогично предыдущей точке входа, но данные возвращаются в виде сформированной_ _html_ _страницы. Ограничений на верстку нет, что-то простое. Формирование через_ _view __,_ _blade__._
+
+_ **Заполнение БД:** _
+
+Для создания таблиц используется «Migrations». Для заполнения БД тестовыми данными используется «Seeding». Для задания наименований и чисел можно использовать Faker/rand/Str::random или любой другой способ.
+
+Требования к БД для проверки (генерация должна создавать такую БД):
+
+Продавцы:
+
+- минимальное количество записей 1000000
+
+- каждый продавец должен предлагать не менее 10000 товаров
+
+- должен быть хотя бы один продавец, который предлагает не менее 100000 товаров
+
+- должен быть один продавец исключение, который не предлагает товаров
+
+Товары:
+
+- минимальное количество записей 1000000
+
+- каждый товар должен быть предложен не менее чем 10000 продавцов
+
+- хотя бы один товар должен быть предложен 100000 продавцов
+
+- должен быть один товар исключение, который не предлагается ни одним продавцом
